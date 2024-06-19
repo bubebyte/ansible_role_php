@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Gather service facts
+      service_facts:
+
+    - debug:
+        var: ansible_facts.services["php-fpm.service"]
+
+    - name: Check php-fpm service state
+      fail:
+        msg: The service php-fpm is not running.
+      when: ansible_facts.services["php-fpm.service"].state != "running"
+
+    - name: Check php-fpm service state
+      fail:
+        msg: The service php-fpm is not enabled.
+      when: ansible_facts.services["php-fpm.service"].status != "enabled"

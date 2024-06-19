@@ -1,0 +1,12 @@
+---
+- name: Fail if os family is not supported
+  fail:
+    msg: "This role is not tested for {{ ansible_os_family }}"
+  when: ansible_os_family != "RedHat"
+
+- name: Fail if os release is not supported
+  fail:
+    msg: "This role is not tested for os release {{ ansible_distribution_major_version }}"
+  when:
+    - ansible_distribution_major_version > "9"
+    - ansible_distribution_major_version < "9"

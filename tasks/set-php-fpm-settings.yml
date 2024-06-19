@@ -1,0 +1,13 @@
+---
+- name: "Set php-fpm settings for pool {{ php_fpm_pool.name }}"
+  community.general.ini_file:
+    path: "/etc/php-fpm.d/{{ php_fpm_pool.name }}.conf"
+    section: "{{ php_fpm_pool.name }}"
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    owner: root
+    group: root
+    mode: '0644'
+    backup: false
+  loop: "{{ php_fpm_pool.options | dict2items }}"
+  notify: Restart php-fpm daemon
